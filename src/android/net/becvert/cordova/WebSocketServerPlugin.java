@@ -135,7 +135,8 @@ public class WebSocketServerPlugin extends CordovaPlugin {
                         if (protocols != null) {
                             ArrayList<Draft_6455> drafts = new ArrayList<Draft_6455>();
                             for (String protocol : protocols) {
-                                drafts.add(new Draft_6455(Collections.<IExtension> emptyList(), Collections.<IProtocol> singletonList(new Protocol(protocol))));
+                                drafts.add(new Draft_6455(Collections.<IExtension>emptyList(),
+                                        Collections.<IProtocol>singletonList(new Protocol(protocol))));
                             }
                             newServer = new WebSocketServerImpl(port, (List) drafts);
                         } else {
@@ -157,6 +158,7 @@ public class WebSocketServerPlugin extends CordovaPlugin {
                     }
 
                     try {
+                        newServer.setConnectionLostTimeout(0);
                         newServer.start();
                     } catch (IllegalStateException e) {
                         Log.e(TAG, e.getMessage(), e);
