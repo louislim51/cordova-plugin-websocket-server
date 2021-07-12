@@ -152,7 +152,7 @@ public class WebSocketServerImpl extends WebSocketServer {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, ByteBuffer binary){
+    public void onMessage(WebSocket webSocket, ByteBuffer binary) {
         Log.v(WebSocketServerPlugin.TAG, "onmessage (binary)");
 
         String uuid = socketsUUID.get(webSocket);
@@ -314,16 +314,16 @@ public class WebSocketServerImpl extends WebSocketServer {
         if (webSocket != null && !this.failed) {
             if (webSocket.isOpen()) {
                 if (!is_binary) {
-                    
+
                     // send text frame (websocket opcode 1)
                     webSocket.send(msg);
-                    
+
                 } else {
                     // send binary frame (websocket opcode 2)
                     try {
                         webSocket.send(Base64.decode(msg, Base64.DEFAULT));
 
-                    } catch(IllegalArgumentException e) {
+                    } catch (IllegalArgumentException e) {
                         Log.d(WebSocketServerPlugin.TAG, "send: wrong binary format");
                     }
                 }
@@ -334,6 +334,22 @@ public class WebSocketServerImpl extends WebSocketServer {
             Log.d(WebSocketServerPlugin.TAG, "send: unknown websocket");
         }
 
+    }
+
+    public void ping(String uuid) {
+        Log.v(WebSocketServerPlugin.TAG, "send ping");
+
+        WebSocket webSocket = UUIDSockets.get(uuid);
+
+        if (webSocket != null && !this.failed) {
+            if (webSocket.isOpen()) {
+                webSocket.sendPing();
+            } else {
+                Log.d(WebSocketServerPlugin.TAG, "send ping: websocket not open");
+            }
+        } else {
+            Log.d(WebSocketServerPlugin.TAG, "send ping: unknown websocket");
+        }
     }
 
     public void close(String uuid, int code, String reason) {

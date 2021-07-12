@@ -115,6 +115,10 @@ var WebSocketServer = {
     }
   },
 
+  ping: function (conn) {
+    return exec(null, fail, "WebSocketServer", "send_ping", [conn.uuid]);
+  },
+
   close: function (conn, code, reason) {
     return exec(null, fail, "WebSocketServer", "close", [
       conn.uuid,

@@ -36,6 +36,7 @@ public class WebSocketServerPlugin extends CordovaPlugin {
     public static final String ACTION_START = "start";
     public static final String ACTION_STOP = "stop";
     public static final String ACTION_SEND = "send";
+    public static final String ACTION_SEND_PING = "send_ping";
     public static final String ACTION_SEND_BINARY = "send_binary";
     public static final String ACTION_CLOSE = "close";
 
@@ -223,6 +224,21 @@ public class WebSocketServerPlugin extends CordovaPlugin {
                 return false;
             }
 
+        } else if (ACTION_SEND_PING.equals(action)) {
+            final String uuid = args.optString(0);
+            if (uuid != null) {
+                this.cordova.getThreadPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (wsserver != null) {
+                            wsserver.ping(uuid);
+                        }
+                    }
+                });
+            } else {
+                callbackContext.error("UUID or msg not specified.");
+                return false;
+            }
         } else if (ACTION_CLOSE.equals(action)) {
 
             final String uuid = args.optString(0);
