@@ -159,7 +159,7 @@ public class WebSocketServerPlugin extends CordovaPlugin {
                     }
 
                     try {
-                        newServer.setConnectionLostTimeout(0);
+                        // newServer.setConnectionLostTimeout(0);
                         newServer.start();
                     } catch (IllegalStateException e) {
                         Log.e(TAG, e.getMessage(), e);
